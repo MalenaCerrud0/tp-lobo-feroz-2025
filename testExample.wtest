@@ -1,0 +1,78 @@
+import loboFeroz.*
+
+//Las partes que son tipo relato no se me ocurre otra forma de hacerlas
+//asi que las hago como tests..
+
+describe "Test de recorridos del Lobo Feroz" {
+
+  test "Caso de Caperucita Roja" {
+
+    loboSolitario.calorias(70)
+    //El lobo va corriendo hasta el bosque, donde se encuentra con Caperucita y le pregunta a dónde va
+    loboSolitario.correrA(bosque)
+
+    //Caperucita le dice que va a la casa de su abuela
+    //Como tiene mucho hambre, el lobo se come a Rapunzel que justo pasaba por allí
+    loboSolitario.comer(rapunzel)
+
+    //Luego, el lobo corre a la casa de la abuelita y la come
+    loboSolitario.correrA(casaAbuela)
+    loboSolitario.comer(abuela)
+
+    //Apenas ésta llega y le comienza a hacer preguntas molestas, el lobo también se come a Caperucita Roja
+    loboSolitario.comer(caperucitaRoja)
+
+    //Dsp de todo esto el lobo tiene 180 calorías
+    assert.equals(180, loboSolitario.cantidadDeCaloriasActual())
+
+    //¿Queda en un estado saludable el lobo? NO
+    assert.notThat(loboSolitario.estaSaludable())
+    
+    //¿Está gordo? NO
+    assert.notThat(loboSolitario.estaGordo())
+  }
+
+  test "Caso de los Tres Chanchitos" {
+    const chanchito1 = new Chanchito(peso=30)
+    const chanchito2 = new Chanchito(peso=50)
+    const chanchito3 = new Chanchito(peso=70)
+
+    casaDePaja.ocupantes().add(chanchito1)
+    casaDeMadera.ocupantes().add(chanchito2)
+    casaDeLadrillo.ocupantes().add(chanchito3)
+
+    //El lobo sopla primero la casa de paja, la hace caer y
+    //el chanchito huye a la casa de madera donde estaba el otro chanchito
+    loboSolitario.soplar(casaDePaja)
+    casaDeMadera.ocupantes().remove(chanchito1)
+    casaDeMadera.ocupantes().add(chanchito1)
+    
+    //El lobo corre hasta la casa de madera, la sopla y la destruye, por lo que
+    //ambos chanchitos se van a la casa de ladrillos del tercer chanchito
+    loboSolitario.correrA(casaDeMadera)
+    loboSolitario.soplar(casaDeMadera)
+    loboSolitario.destruir(casaDeMadera)
+
+    casaDeLadrillo.ocupantes().add(chanchito1)
+    casaDeLadrillo.ocupantes().add(chanchito2)
+
+    //El lobo los corre, sopla la casa de ladrillos y también logra tirarla abajo
+    loboSolitario.correrA(casaDeLadrillo)
+    loboSolitario.soplar(casaDeLadrillo)
+    loboSolitario.destruir(casaDeLadrillo)
+
+    //El lobo se come a los tres chanchitos
+    loboSolitario.comer(chanchito1)
+    loboSolitario.comer(chanchito2)
+    loboSolitario.comer(chanchito3)
+  
+    //Dsp de todo esto el lobo tiene 106,5 calorías
+    assert.equals(120, loboSolitario.cantidadDeCaloriasActual())
+
+    //¿Queda saludable el lobo? SI
+    assert.that(loboSolitario.estaSaludable())
+
+    //¿Queda gordo? NO
+    assert.notThat(loboSolitario.estaGordo())
+  }
+}
